@@ -1,0 +1,62 @@
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(255),
+    salt VARCHAR(32)
+);
+
+CREATE TABLE tour_packages (
+    package_id INT AUTO_INCREMENT PRIMARY KEY,
+    package_name VARCHAR(100),
+    description TEXT,
+    price DECIMAL(10, 2),
+    image_url VARCHAR(255),
+    start_date DATE,
+    end_date DATE
+);
+
+CREATE TABLE bookings (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    package_id INT,
+    num_people INT,
+    special_requests TEXT,
+    total_price DECIMAL(10, 2),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY (package_id) REFERENCES tour_packages(package_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE feedback (
+    feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    comment TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE reviews (
+    review_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    package_id INT,
+    review TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY (package_id) REFERENCES tour_packages(package_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+INSERT INTO tour_packages (package_name, description, price, image_url, start_date, end_date)
+VALUES 
+    ('Beach Paradise', 'A relaxing beach vacation with scenic views and water activities.', 799.99, 'beach.jpg', '2024-12-01', '2024-12-07'),
+    ('Mountain Adventure', 'A thrilling adventure trip in the mountains, including hiking, camping, and more.', 1299.99, 'mountains.jpg', '2024-12-10', '2024-12-17'),
+    ('City Escape', 'Explore the city\'s attractions, museums, and night life.', 599.99, 'city.jpg', '2024-11-20', '2024-11-25'),
+    ('Jungle Safari', 'A wildlife experience in the jungle, perfect for nature lovers.', 999.99, 'jungle.jpg', '2024-12-05', '2024-12-12'),
+    ('Island Getaway', 'Relax on a beautiful island with exotic beaches and exclusive resorts.', 899.99, 'island.jpg', '2024-12-15', '2024-12-22');
